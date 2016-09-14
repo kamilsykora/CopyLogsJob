@@ -26,20 +26,27 @@ namespace CopyLogsJob
                 Console.WriteLine("Created directory " + dst);
             }
 
+            //Delete files from dst 
+            var dstFiles = Directory.EnumerateFiles(dst);
+            foreach (var dstPath in dstFiles)
+            {
+                if (File.Exists(dstPath))
+                {
+                    File.Delete(dstPath);
+                    Console.WriteLine("Deleted " + dstPath);
+                }
+            }
+
 
             if (Directory.Exists(src))
             {
-                var files = Directory.EnumerateFiles(src);
-                foreach (var srcPath in files)
+                var srcFiles = Directory.EnumerateFiles(src);
+                foreach (var srcPath in srcFiles)
                 {
                     string fileName = Path.GetFileName(srcPath);
                     string dstPath = Path.Combine(dst, fileName);
-                    if (File.Exists(dstPath))
-                    {
-                        File.Delete(dstPath);
-                    }
                     File.Copy(srcPath, dstPath);
-                    Console.WriteLine("Copied " + fileName);
+                    Console.WriteLine("Copied " + srcPath);
                 }
             }
         }
